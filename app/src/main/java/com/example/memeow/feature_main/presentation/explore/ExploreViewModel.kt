@@ -18,7 +18,6 @@ import javax.inject.Inject
 class ExploreViewModel @Inject constructor(
     private val memeUseCases: MemeUseCases
 ): ViewModel() {
-
     private val _state = mutableStateOf(ExploreState())
     val state: State<ExploreState> = _state
 

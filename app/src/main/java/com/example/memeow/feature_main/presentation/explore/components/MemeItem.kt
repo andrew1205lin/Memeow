@@ -1,5 +1,6 @@
 package com.example.memeow.feature_main.presentation.explore.components
 
+import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -15,31 +16,35 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.ui.tooling.preview.Preview
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.example.memeow.R
 
 @Composable
 fun MemeItem(
-    @DrawableRes drawable: Int,
+    imageUri: Uri,
     modifier: Modifier = Modifier,
-    onImageClick: (drawable: Int) -> Unit
+    onImageClick: (imageUri: Uri) -> Unit
 ) {
     Surface(
         shape = MaterialTheme.shapes.small,
         modifier = modifier
     ) {
         Image(
-            painter = painterResource(drawable),
+            painter = rememberAsyncImagePainter(model = imageUri),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(168.dp)//the image size display in lazy grid
                 .clickable {
-                    onImageClick(drawable)
+                    onImageClick(imageUri)
                 }
         )
     }
 }
 
+
+/*
 @Composable
 @Preview
 fun MemeItemPreview() {
@@ -48,3 +53,4 @@ fun MemeItemPreview() {
         onImageClick = {}
     )
 }
+*/
