@@ -62,7 +62,7 @@ fun navigationBar(
                 val imageId = entry.arguments?.getString("image")
 
                 if (imageId != null) {
-                    singleViewBody(imageUri =  Uri.parse(imageId))
+                    singleViewBody(imageUri =  Uri.parse(imageId.replace('\\', '/')))
                 }
             }
         }
@@ -73,5 +73,6 @@ fun navigateToSingleView(
     navController: NavHostController,
     image: Uri
 ){
-    navController.navigate("${MemeowScreen.Explore.name}/$image")
+    val modifiedUri = image.toString().replace('/', '\\')
+    navController.navigate("${MemeowScreen.Explore.name}/$modifiedUri")
 }
