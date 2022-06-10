@@ -66,11 +66,37 @@ class MainActivity : ComponentActivity() {
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 100
             )
         }
+        if (!haveInternetPermission()) {
+            val permissions = arrayOf(Manifest.permission.INTERNET)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.INTERNET), 100
+            )
+        }
+        if (!haveNetStatePermission()) {
+            val permissions = arrayOf(Manifest.permission.ACCESS_NETWORK_STATE)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_NETWORK_STATE), 100
+            )
+        }
     }
     private fun haveStoragePermission() =
         ContextCompat.checkSelfPermission(
             this,
             Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+
+    private fun haveInternetPermission() =
+        ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.INTERNET
+        ) == PackageManager.PERMISSION_GRANTED
+
+    private fun haveNetStatePermission() =
+        ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_NETWORK_STATE
         ) == PackageManager.PERMISSION_GRANTED
 
 }

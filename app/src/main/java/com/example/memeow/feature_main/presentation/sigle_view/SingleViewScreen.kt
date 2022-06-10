@@ -1,6 +1,7 @@
 package com.example.memeow.feature_main.presentation.sigle_view
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface

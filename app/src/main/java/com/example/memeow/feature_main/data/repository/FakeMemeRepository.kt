@@ -7,13 +7,20 @@ import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.util.Log
 import com.example.memeow.R
+import com.example.memeow.feature_main.data.data_source.local.MemeDao
+import com.example.memeow.feature_main.data.data_source.local.MemeDatabase
+import com.example.memeow.feature_main.data.data_source.remote.MemeApi
 import com.example.memeow.feature_main.domain.model.Meme
 import com.example.memeow.feature_main.domain.repository.MemeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class FakeMemeRepository (contentResolver: ContentResolver): MemeRepository {
+class FakeMemeRepository (
+    private val contentResolver: ContentResolver,
+    private val api: MemeApi,
+    private val dao: MemeDao
+    ): MemeRepository {
     var uriList: MutableList<Uri> = mutableListOf()
 
     init {
@@ -69,7 +76,10 @@ class FakeMemeRepository (contentResolver: ContentResolver): MemeRepository {
     /*need to be connected to database later*/
 
     override fun getMemes(): Flow<List<Meme>> {
-        return flow { emit(memes) }
+        return flow {
+            val apimemes = api.gettrendingmeme().map{it.toMeme()}
+            emit(apimemes)
+        }
     }
 
     override suspend fun insertMeme(meme: Meme){
