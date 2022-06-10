@@ -7,7 +7,7 @@ import retrofit2.http.GET
 
 interface MemeApi {
     @GET(".")
-    suspend fun gettrendingmeme(): List<MemeDto>
+    suspend fun gettrendingMeme(): List<MemeDto>
     companion object {
         const val BASE_URL = "https://memes.tw/wtf/api/"
         val moshi = Moshi.Builder()

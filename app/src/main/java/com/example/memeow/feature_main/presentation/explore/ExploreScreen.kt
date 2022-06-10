@@ -57,7 +57,7 @@ fun ExploreScreen(
             LazyVerticalGrid(columns = GridCells.Fixed(2)){
                 Log.i(TAG, "LazyVerticalGrid")
                 items(state.memes) { meme ->
-                    Log.d("","imageUri = ${meme.image}")
+                    //Log.d("","imageUri = ${meme.image}")
                     MemeItem(
                         imageUri = meme.image,
                         onImageClick = { onImageClick(meme.image) }

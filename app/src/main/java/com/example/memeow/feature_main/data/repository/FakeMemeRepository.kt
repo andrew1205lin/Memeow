@@ -9,6 +9,7 @@ import android.util.Log
 import com.example.memeow.R
 import com.example.memeow.feature_main.data.data_source.local.MemeDao
 import com.example.memeow.feature_main.data.data_source.local.MemeDatabase
+import com.example.memeow.feature_main.data.data_source.local.entity.MemeEntity
 import com.example.memeow.feature_main.data.data_source.remote.MemeApi
 import com.example.memeow.feature_main.domain.model.Meme
 import com.example.memeow.feature_main.domain.repository.MemeRepository
@@ -60,7 +61,7 @@ class FakeMemeRepository (
                 val bucketID = cursor.getInt(3)
 
                 val bucketName = cursor.getString(2)
-                Log.i("GETIMG","bucket id : $bucketID ,bucket name: $bucketName ,uri: $imageUri")
+                //Log.i("GETIMG","bucket id : $bucketID ,bucket name: $bucketName ,uri: $imageUri")
                 uriList.add(imageUri)
                 // Use an ID column from the projection to get
                 // a URI representing the media item itself.
@@ -68,6 +69,7 @@ class FakeMemeRepository (
         }
         Log.i("GETIMG","uriList.size=${uriList.size}")
     }
+
     private val memes = mutableListOf<Meme>(
         Meme("cat_1", uriList[0], listOf("cat","1")),
         Meme("cat_2", uriList[1], listOf("cat","2")),
@@ -76,12 +78,36 @@ class FakeMemeRepository (
     /*need to be connected to database later*/
 
     override fun getMemes(): Flow<List<Meme>> {
+
         return flow {
-            val apimemes = api.gettrendingmeme().map{it.toMeme()}
-            emit(apimemes)
+            val daomemes = dao.getMeme().map { it.toMeme() }
+            val checkList = daomemes.map { it.image }       //checklist = memes in dataset
+            val notincontentList = checkList
+                .filterNot{it in uriList}
+                .map{it.toString()}
+            dao.deleteMemeByUris(notincontentList)
+            val notindatasetList = uriList
+                .filterNot{it in checkList}
+                .map{it.toString()}
+            val Memestoadd = notindatasetList.map{
+                MemeEntity(
+                    image = it,
+                    tags = listOf("null","not","handled"),
+                    title = "notnull"
+                )
+            }
+            dao.insertMemes(Memestoadd)
+            val daomemes2 = dao.getMeme().map { it.toMeme() }
+            emit(daomemes2)
         }
     }
 
+    override fun exploreMemes(): Flow<List<Meme>> {
+        return flow{
+            val apimemes = api.gettrendingMeme().map{it.toMeme()}
+            emit(apimemes)
+        }
+    }
     override suspend fun insertMeme(meme: Meme){
         memes.add(meme)
     }

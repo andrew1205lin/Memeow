@@ -49,7 +49,11 @@ fun navigationBar(
                 )
             }
             composable(MemeowScreen.Local.name){
-                LocalBody()
+                LocalBody(
+                    onImageClick = { image ->
+                        navigateToSingleView(navController = navController, image = image)
+                    }
+                )
             }
             composable(
                 route = "$screenName/{image}",

@@ -10,10 +10,7 @@ import com.example.memeow.feature_main.data.data_source.remote.MemeApi
 import com.example.memeow.feature_main.data.data_source.remote.MemeApi.Companion.moshi
 import com.example.memeow.feature_main.data.repository.FakeMemeRepository
 import com.example.memeow.feature_main.domain.repository.MemeRepository
-import com.example.memeow.feature_main.domain.use_case.AddMeme
-import com.example.memeow.feature_main.domain.use_case.DeleteMeme
-import com.example.memeow.feature_main.domain.use_case.GetMemes
-import com.example.memeow.feature_main.domain.use_case.MemeUseCases
+import com.example.memeow.feature_main.domain.use_case.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -67,6 +64,7 @@ object AppModule {
         Log.d("","inside provideNoteUseCases")
         return MemeUseCases(
             getMemes = GetMemes(repository),
+            exploreMemes = ExploreMemes(repository),
             deleteMeme = DeleteMeme(repository),
             addMeme = AddMeme(repository)
         )

@@ -6,12 +6,12 @@ import androidx.room.PrimaryKey
 import com.example.memeow.feature_main.domain.model.Meme
 
 
-@Entity(tableName = "meme")
+@Entity(tableName = "meme") //"MemeEntity" is the default table name.
 data class MemeEntity(
-    val image: String,
+    @PrimaryKey val image: String,
     val tags: List<String>,
     val title: String,
-    @PrimaryKey val id: Int? = null
+    val id: Int? = null
 ) {
     fun toMeme(): Meme {
         return Meme(

@@ -17,6 +17,7 @@ import coil.compose.rememberAsyncImagePainter
 fun singleViewBody(
     imageUri: Uri
 ){
+    Log.d("","imageUri = $imageUri")
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
