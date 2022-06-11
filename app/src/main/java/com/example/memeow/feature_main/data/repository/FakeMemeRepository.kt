@@ -116,6 +116,19 @@ class FakeMemeRepository (
         memes.remove(meme)
     }
 
+    override suspend fun insertTagsByUri(tags: List<String>, uri: Uri) {
+        val uriString = uri.toString()
+        val oldtags = dao.getMemeByUri(uriString).toMeme().tags
+        val newtags = (tags union oldtags).toList()
+        dao.update(newtags,uriString)
+    }
+
+    override suspend fun removeTagsByUri(tags: List<String>, uri: Uri) {
+        val uriString = uri.toString()
+        val oldtags = dao.getMemeByUri(uriString).toMeme().tags
+        val newtags = (oldtags subtract tags.toSet()).toList()
+        dao.update(newtags,uriString)
+    }
 
 }
 
