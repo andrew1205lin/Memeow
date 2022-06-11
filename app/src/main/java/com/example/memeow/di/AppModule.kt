@@ -4,6 +4,9 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
+
+import com.example.memeow.feature_keyboard.domain.use_case.KeyboardUseCases
+import com.example.memeow.feature_keyboard.domain.use_case.SendMeme
 import com.example.memeow.feature_main.data.data_source.local.MemeDatabase
 import com.example.memeow.feature_main.data.data_source.local.entity.Converters
 import com.example.memeow.feature_main.data.data_source.remote.MemeApi
@@ -67,6 +70,17 @@ object AppModule {
             exploreMemes = ExploreMemes(repository),
             deleteMeme = DeleteMeme(repository),
             addMeme = AddMeme(repository)
+        )
+    }
+
+
+    /*----Keyboard-------*/
+    /*UseCases*/
+    @Provides
+    @Singleton
+    fun provideKeyboardUseCases(): KeyboardUseCases {
+        return KeyboardUseCases(
+            sendMeme = SendMeme()
         )
     }
 
